@@ -1,0 +1,10 @@
+--- Python/setup.py	2021-10-28 15:08:08.874418849 +0000
++++ Python/setup_edit.py	2021-10-28 15:34:31.176000000 +0000
+@@ -496,7 +496,6 @@
+     ext_modules=[Ax_ext, Atb_ext, tvdenoising_ext, minTV_ext, AwminTV_ext, gpuUtils_ext, RandomNumberGenerator_ext],
+     py_modules=["tigre.py"],
+     cmdclass={"build_ext": BuildExtension},
+-    install_requires=["Cython", "matplotlib", "numpy", "scipy", "tqdm"],
+     license_files=("LICENSE",),
+     license="BSD 3-Clause",
+     # since the package has c code, the egg cannot be zipped
