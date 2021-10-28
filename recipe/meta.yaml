@@ -11,6 +11,7 @@ source:
 build:
   skip: True # [py==38 and np==115]
   preserve_egg_dir: False
+  number: {{ GIT_DESCRIBE_NUMBER }}
 
   missing_dso_whitelist:
     - $RPATH/libc.so.6  # [linux]
