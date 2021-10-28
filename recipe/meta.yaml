@@ -3,7 +3,7 @@ package:
   version: {{ environ.get('GIT_DESCRIBE_TAG','v')[1:] }}
 
 source:
-  git_rev: v2.2
+  git_rev: 3067d6b9d08875c2bbce4e6f06a5513119353bfe
   git_url: git@github.com:CERN/TIGRE.git
   patches:
     - setup.patch
