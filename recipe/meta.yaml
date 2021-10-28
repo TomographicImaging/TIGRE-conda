@@ -1,26 +1,30 @@
 package:
   name: tigre
-  version: 2.0
+  version: {{ environ.get('GIT_DESCRIBE_TAG','v')[1:] }}
+
+source:
+  git_rev: 3067d6b9d08875c2bbce4e6f06a5513119353bfe
+  git_url: git@github.com:CERN/TIGRE.git
+  patches:
+    - setup.patch
 
 build:
+  skip: True # [py==38 and np==115]
   preserve_egg_dir: False
-  number: 0
-  
-source:
-  git_rev: v2.0
-  git_url: https://github.com/cern/tigre.git
-  patch:
-    - patch_setup_conda.patch
-# test:
-#   source_files:
-#     - ./test/
-#  requires:
-#    - pillow
-#    - pillow=4.1.1 # [win]
-  # commands:
-  #   - python -c "import os; print (os.getcwd())"
-  #   - python -m unittest discover -s test
-  
+  number: {{ GIT_DESCRIBE_NUMBER }}
+
+  missing_dso_whitelist:
+    - $RPATH/libc.so.6  # [linux]
+    - $RPATH/libm.so.6  # [linux]
+    - $RPATH/libdl.so.2 # [linux]
+    - $RPATH/libpthread.so.0 # [linux]
+    - $RPATH/librt.so.1 # [linux]
+    - $RPATH/libicuuc.so.60  #[linux]
+    - $RPATH/libicui18n.so.60 #[linux]
+    - $RPATH/libcudart.so.9.2 #[linux]
+    - $RPATH/cudart64_92.dll #[win]
+    
+
 requirements:
   build:
     - python
@@ -32,14 +36,16 @@ requirements:
     - scipy
 
   run:
-    - {{ pin_compatible('numpy', max_pin='x.x') }}
+    - {{ pin_compatible('numpy', min_pin='x.x', max_pin='x.x') }}
     - python
-    - numpy
-    - matplotlib
+    - matplotlib 
     - scipy
+    - libstdcxx-ng # [unix]
     - libgcc-ng # [unix]
+    - vc 14 # [win]
+    - cudatoolkit=9.2
 
 about:
-  home: http://www.ccpi.ac.uk
+  home: https://github.com/CERN/TIGRE
   license:  BSD license
-  summary: 'CCPi Core Imaging Library Quantification Toolbox'
+  summary: 'TIGRE: Tomographic Iterative GPU-based Reconstruction Toolbox'
