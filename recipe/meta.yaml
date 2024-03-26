@@ -5,10 +5,8 @@ package:
 source:
 #  git_rev: 3067d6b9d08875c2bbce4e6f06a5513119353bfe
   git_url: https://github.com/CERN/TIGRE.git
-  git_rev: v2.4
+  git_rev: v2.6
   git_depth: 1
-  patches:
-    - setup.patch
 
 build:
   preserve_egg_dir: False
@@ -41,11 +39,12 @@ requirements:
     - {{ pin_compatible('numpy', min_pin='x.x', max_pin='x.x') }}
     - matplotlib 
     - scipy
+    - tqdm
     - libstdcxx-ng # [unix]
     - libgcc-ng # [unix]
     - vc 14 # [win]
+    - __cuda >=X.0
     - {{ pin_compatible('cudatoolkit', min_pin=nvcc_version, max_pin=nvcc_version) }}
-
 about:
   home: https://github.com/CERN/TIGRE
   license:  BSD license
