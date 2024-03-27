@@ -7,6 +7,8 @@ source:
   git_url: https://github.com/CERN/TIGRE.git
   git_rev: v2.6
   git_depth: 1
+  patches:
+    - setup.patch
 
 build:
   preserve_egg_dir: False
@@ -33,6 +35,7 @@ requirements:
     - ripgrep
     - matplotlib
     - scipy
+    - tqdm
 
   run:
     - python
@@ -43,7 +46,7 @@ requirements:
     - libstdcxx-ng # [unix]
     - libgcc-ng # [unix]
     - vc 14 # [win]
-    - __cuda >=X.0
+    - __cuda >=10.2
     - {{ pin_compatible('cudatoolkit', min_pin=nvcc_version, max_pin=nvcc_version) }}
 about:
   home: https://github.com/CERN/TIGRE
