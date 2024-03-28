@@ -47,7 +47,8 @@ requirements:
     - libgcc-ng # [unix]
     - vc 14 # [win]
     - __cuda >=10.2
-    - {{ pin_compatible('cudatoolkit', min_pin=nvcc_version, max_pin=nvcc_version) }}
+    - cudatoolkit=10.2
+
 about:
   home: https://github.com/CERN/TIGRE
   license:  BSD license
