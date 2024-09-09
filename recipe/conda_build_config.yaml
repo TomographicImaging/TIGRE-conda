@@ -1,4 +1,5 @@
-#creates pairs of versions using zip_keys, lists must be the same length
+cuda_compiler_version:
+  - '11.8'
 python:
   - 3.10 
   - 3.10 
