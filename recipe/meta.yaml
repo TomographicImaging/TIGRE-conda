@@ -3,12 +3,12 @@ package:
   version: {{ environ.get('GIT_DESCRIBE_TAG','v')[1:] }}
 
 source:
-#  git_rev: 3067d6b9d08875c2bbce4e6f06a5513119353bfe
   git_url: https://github.com/CERN/TIGRE.git
   git_rev: v2.6
   git_depth: 1
   patches:
     - setup.patch
+    - cuda_home.patch
 
 build:
   preserve_egg_dir: False
@@ -23,8 +23,6 @@ build:
     - $RPATH/libicuuc.so.60  #[linux]
     - $RPATH/libicui18n.so.60 #[linux]
     - $RPATH/libcudart.so.* #[linux]
-    - $RPATH/cudart64_*.dll #[win]
-    
 
 requirements:
   build:
@@ -45,8 +43,8 @@ requirements:
     - tqdm
     - libstdcxx-ng # [unix]
     - libgcc-ng # [unix]
-    - vc 14 # [win]
-    - cudatoolkit=11.8
+    - cudatoolkit {{ cuda_compiler_version }} 
+    - vc 14.2 # [win]
 
 about:
   home: https://github.com/CERN/TIGRE
