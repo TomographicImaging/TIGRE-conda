@@ -12,7 +12,7 @@ source:
 
 build:
   preserve_egg_dir: False
-  number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
+  number: {{ str(int(environ.get('GIT_DESCRIBE_NUMBER', 0)) + 1) }}
 
   missing_dso_whitelist:
     - $RPATH/libc.so.6  # [linux]
@@ -31,14 +31,14 @@ requirements:
     - setuptools
     - cython
     - ripgrep
-    - matplotlib
+    - matplotlib-base
     - scipy
     - tqdm
 
   run:
     - python
     - {{ pin_compatible('numpy', min_pin='x.x', max_pin='x.x') }}
-    - matplotlib 
+    - matplotlib-base
     - scipy
     - tqdm
     - libstdcxx-ng # [unix]
