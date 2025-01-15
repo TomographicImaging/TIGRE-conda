@@ -1,3 +1,6 @@
+{% set git_describe_number = environ.get('GIT_DESCRIBE_NUMBER', 0) %}
+{% set incremented_build_number = git_describe_number | int + 1 %}
+
 package:
   name: tigre
   version: {{ environ.get('GIT_DESCRIBE_TAG','v')[1:] }}
@@ -12,7 +15,7 @@ source:
 
 build:
   preserve_egg_dir: False
-  number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
+  number: {{ incremented_build_number }}
 
   missing_dso_whitelist:
     - $RPATH/libc.so.6  # [linux]
@@ -31,14 +34,14 @@ requirements:
     - setuptools
     - cython
     - ripgrep
-    - matplotlib
+    - matplotlib-base
     - scipy
     - tqdm
 
   run:
     - python
     - {{ pin_compatible('numpy', min_pin='x.x', max_pin='x.x') }}
-    - matplotlib 
+    - matplotlib-base
     - scipy
     - tqdm
     - libstdcxx-ng # [unix]
