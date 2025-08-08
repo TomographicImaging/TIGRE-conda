@@ -3,9 +3,8 @@ package:
   version: {{ environ.get('GIT_DESCRIBE_TAG','v')[1:] }}
 
 source:
-  git_url: https://github.com/CERN/TIGRE.git
-  git_rev: v2.6
-  git_depth: 1
+  url: https://github.com/CERN/TIGRE/archive/refs/tags/v2.6.tar.gz
+  sha256: a58104e62a84591ed59dc2f6a2be6ff7b1bec0ec6a47c159a17ed64f18895842
   patches:
     - setup.patch
     - cuda_home.patch
@@ -13,38 +12,30 @@ source:
 build:
   preserve_egg_dir: False
   number: {{ environ.get('GIT_DESCRIBE_NUMBER', 0) }}
-
-  missing_dso_whitelist:
-    - $RPATH/libc.so.6  # [linux]
-    - $RPATH/libm.so.6  # [linux]
-    - $RPATH/libdl.so.2 # [linux]
-    - $RPATH/libpthread.so.0 # [linux]
-    - $RPATH/librt.so.1 # [linux]
-    - $RPATH/libicuuc.so.60  #[linux]
-    - $RPATH/libicui18n.so.60 #[linux]
-    - $RPATH/libcudart.so.* #[linux]
+  ignore_run_exports:
+    - cudatoolkit
 
 requirements:
   build:
+    - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }}
+
+  host:
     - python
-    - numpy {{ numpy }}
+    - numpy
     - setuptools
     - cython
     - ripgrep
-    - matplotlib
-    - scipy
-    - tqdm
+    - cuda-version {{ cuda_compiler_version }}
 
   run:
     - python
     - {{ pin_compatible('numpy', min_pin='x.x', max_pin='x.x') }}
-    - matplotlib 
+    - matplotlib
     - scipy
     - tqdm
-    - libstdcxx-ng # [unix]
-    - libgcc-ng # [unix]
-    - cudatoolkit {{ cuda_compiler_version }} 
-    - vc 14.2 # [win]
+    - __cuda
+    - {{ pin_compatible("cuda-version", min_pin="x.x", max_pin="x") }}
 
 about:
   home: https://github.com/CERN/TIGRE
