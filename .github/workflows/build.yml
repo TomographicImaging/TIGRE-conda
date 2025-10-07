@@ -1,0 +1,41 @@
+name: build
+on:
+  release: {types: [published]}
+  push:
+    branches: [main]
+    tags: ['**']
+  pull_request: {branches: [main]}
+jobs:
+  conda:
+    defaults: {run: {shell: 'bash -el {0}'}}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ubuntu, windows]
+    steps:
+    - uses: actions/checkout@v5
+      with: {fetch-depth: 0}
+    - if: matrix.os == 'windows'
+      uses: ilammy/msvc-dev-cmd@v1
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: 3.12
+        mamba-version: "*"
+        channels: conda-forge
+        conda-remove-defaults: "true"
+    - run: conda install boa conda-verify
+    - name: conda build & test
+      run: conda mambabuild -c conda-forge -c nvidia --override-channels --python=3.12 --numpy=2.3 --output-folder dist .
+    - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
+      name: anaconda upload -c ccpi
+      run: |
+        conda install anaconda-client
+        anaconda -v -t ${{ secrets.CCPI_CONDA_TOKEN }} upload --force --label ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }} dist/*/*.tar.bz2
+    - if: startsWith(github.ref, 'refs/tags')
+      name: conda upload -c tomography.stfc.ac.uk/conda
+      run: |
+        echo '${{ secrets.STFC_SSH_KEY }}' > ./key
+        chmod 600 ./key
+        rsync -e 'ssh -o StrictHostKeyChecking=no -i ./key' -R dist/*/*.tar.bz2 '${{ secrets.STFC_SSH_HOST }}:${{ secrets.STFC_SSH_CONDA_DIR }}'
+        ssh -o StrictHostKeyChecking=no -i ./key ${{ secrets.STFC_SSH_HOST }} \
+          'bash -lic "conda index --bz2 --zst --run-exports --channeldata --rss -n ccpi ${{ secrets.STFC_SSH_CONDA_DIR }}"'
