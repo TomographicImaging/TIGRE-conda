@@ -1,0 +1,28 @@
+[workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64", "win-64"]
+preview = ["pixi-build"]
+
+[system-requirements]
+cuda = "12"
+
+[workspace.build-variants]
+python = ["3.10.*", "3.11.*", "3.12.*", "3.13.*", "3.14.*"]
+
+[package.build]
+backend = { name = "pixi-build-python", version = "*" }
+
+[package.build.source]
+git = "https://github.com/CERN/TIGRE.git"
+# # Note: versions prior to 3.1 are not supported due to different build system in TIGRE
+rev = "06e6083e7bc19095557f43809eabb03815c5d0a9"  # Latest, switch to 3.1.2 when released
+
+[package.build.config]
+compilers = ["c", "cxx"]
+
+# This will be default at some point, at which stage this can be removed
+ignore-pypi-mapping = false
+
+[package.host-dependencies]
+python = "*"
+cuda-toolkit = "*"
