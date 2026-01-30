@@ -30,7 +30,8 @@ jobs:
         name: conda-package-${{ matrix.os }}
         path: dist
     - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
-      run: pixi upload anaconda -o ccpi -c ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }} -f -a ${{ secrets.CCPI_CONDA_TOKEN }}
+      name: conda upload -c ccpi
+      run: pixi upload anaconda -o ccpi -c ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }} -f -a ${{ secrets.CCPI_CONDA_TOKEN }} dist/*.conda
     - if: startsWith(github.ref, 'refs/tags')
       name: conda upload -c tomography.stfc.ac.uk/conda
       run: |
