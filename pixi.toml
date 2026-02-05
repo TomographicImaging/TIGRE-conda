@@ -13,9 +13,9 @@ python = ["3.10.*", "3.11.*", "3.12.*", "3.13.*", "3.14.*"]
 backend = { name = "pixi-build-python", version = "*" }
 
 [package.build.source]
-git = "https://github.com/CERN/TIGRE.git"
+git = "https://github.com/h2see/TIGRE.git"
 # # Note: versions prior to 3.1 are not supported due to different build system in TIGRE
-rev = "06e6083e7bc19095557f43809eabb03815c5d0a9"  # Latest, switch to 3.1.2 when released
+rev = "e6f09e14fd713b94b9f10f2c03972bb0524f3cf1" # https://github.com/CERN/TIGRE/pull/719
 
 [package.build.config]
 compilers = ["c", "cxx"]
