@@ -9,7 +9,8 @@ on:
 jobs:
   conda:
     defaults: {run: {shell: bash}}
-    runs-on: ${{ matrix.os }}-latest
+    # use oldest ubuntu image for max glibc compat https://stackoverflow.com/q/70019660
+    runs-on: ${{ matrix.os }}-${{ matrix.os == 'ubuntu' && '22.04' || 'latest' }}
     strategy:
       matrix:
         os: [ubuntu, windows]
@@ -23,7 +24,7 @@ jobs:
         pixi-version: v0.68.1
         run-install: false
     - name: Build
-      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }}
+      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }} --build-number 1
     - name: Publish artifact
       uses: actions/upload-artifact@v7
       with:
@@ -31,7 +32,7 @@ jobs:
         path: dist
     - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
       name: conda upload -c ccpi
-      run: pixi upload anaconda -o ccpi -c ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }} -f -a ${{ secrets.CCPI_CONDA_TOKEN }} dist/*.conda
+      run: pixi upload anaconda -o ccpi -c ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }} -f -a ${{ secrets.CCPI_CONDA_TOKEN }} dist/*/*.conda
     - if: startsWith(github.ref, 'refs/tags')
       working-directory: dist
       name: conda upload -c tomography.stfc.ac.uk/conda
