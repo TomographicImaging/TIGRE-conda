@@ -9,7 +9,8 @@ on:
 jobs:
   conda:
     defaults: {run: {shell: bash}}
-    runs-on: ${{ matrix.os }}-latest
+    # use oldest ubuntu image for max glibc compat https://stackoverflow.com/q/70019660
+    runs-on: ${{ matrix.os }}-${{ matrix.os == 'ubuntu' && '22.04' || 'latest' }}
     strategy:
       matrix:
         os: [ubuntu, windows]
