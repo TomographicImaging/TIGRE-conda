@@ -22,6 +22,21 @@ compilers = ["cxx"]
 # This will be default at some point, at which stage this can be removed
 ignore-pypi-mapping = false
 
+[package.build-dependencies]
+cuda-version = ">=12"
+cuda-toolkit = "*"
+
 [package.host-dependencies]
 python = "*"
-cuda-toolkit = "*"
+cuda-version = ">=12"
+
+[package.target.linux-64.host-dependencies]
+cuda-cudart-dev_linux-64 = "*"
+
+[package.target.win-64.host-dependencies]
+cuda-cudart-dev_win-64 = "*"
+
+[package.run-dependencies]
+python = "*"
+cuda-version = ">=12"
+__cuda = "*"
