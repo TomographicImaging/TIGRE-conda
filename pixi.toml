@@ -11,6 +11,7 @@ python = ["3.10.*", "3.11.*", "3.12.*", "3.13.*", "3.14.*"]
 
 [package.build]
 backend = { name = "pixi-build-python", version = "*" }
+build-number = 3
 
 [package.build.source]
 git = "https://github.com/CERN/TIGRE.git"

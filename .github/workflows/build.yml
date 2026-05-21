@@ -14,21 +14,20 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, windows]
-        # TODO: use CI matrix after https://github.com/prefix-dev/pixi/issues/4877 is fixed
-        # python: ['3.10', 3.11, 3.12, 3.13, 3.14]  # Follow NEP29
+        python: ['3.10', 3.11, 3.12, 3.13, 3.14]  # Follow NEP29
     steps:
     - uses: actions/checkout@v6
       with: {fetch-depth: 0}
     - uses: prefix-dev/setup-pixi@v0.9.5
       with:
-        pixi-version: v0.68.1
+        pixi-version: v0.69.0
         run-install: false
     - name: Build
-      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }} --build-number 2
+      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }} --variant python=${{ matrix.python }}.*
     - name: Publish artifact
       uses: actions/upload-artifact@v7
       with:
-        name: conda-package-${{ matrix.os }}
+        name: conda-package-${{ matrix.os }}-${{ matrix.python }}
         path: dist
     - if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
       name: conda upload -c ccpi
