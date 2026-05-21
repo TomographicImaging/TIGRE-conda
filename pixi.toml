@@ -11,6 +11,7 @@ python = ["3.10.*", "3.11.*", "3.12.*", "3.13.*", "3.14.*"]
 
 [package.build]
 backend = { name = "pixi-build-python", version = "*" }
+build-number = 3
 
 [package.build.source]
 git = "https://github.com/CERN/TIGRE.git"
@@ -23,19 +24,16 @@ compilers = ["cxx"]
 ignore-pypi-mapping = false
 
 [package.build-dependencies]
-cuda-version = ">=12"
-cuda-toolkit = "*"
+cuda-version = "12.*"
+cuda-nvcc = "*"
 
 [package.host-dependencies]
 python = "*"
-cuda-version = ">=12"
+cuda-version = "12.*"
+libcurand-dev = "*"
 
 [package.target.linux-64.host-dependencies]
 cuda-cudart-dev_linux-64 = "*"
 
 [package.target.win-64.host-dependencies]
 cuda-cudart-dev_win-64 = "*"
-
-[package.run-dependencies]
-cuda-version = ">=12"
-cuda-cudart = "*"
