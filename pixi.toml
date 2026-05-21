@@ -24,19 +24,16 @@ compilers = ["cxx"]
 ignore-pypi-mapping = false
 
 [package.build-dependencies]
-cuda-version = ">=12"
-cuda-toolkit = "*"
+cuda-version = "12.*"
+cuda-nvcc = "*"
 
 [package.host-dependencies]
 python = "*"
-cuda-version = ">=12"
+cuda-version = "12.*"
+libcurand-dev = "*"
 
 [package.target.linux-64.host-dependencies]
 cuda-cudart-dev_linux-64 = "*"
 
 [package.target.win-64.host-dependencies]
 cuda-cudart-dev_win-64 = "*"
-
-[package.run-dependencies]
-cuda-version = ">=12"
-cuda-cudart = "*"
