@@ -37,6 +37,5 @@ cuda-cudart-dev_linux-64 = "*"
 cuda-cudart-dev_win-64 = "*"
 
 [package.run-dependencies]
-python = "*"
 cuda-version = ">=12"
-__cuda = "*"
+cuda-cudart = "*"
