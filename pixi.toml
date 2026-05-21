@@ -3,15 +3,14 @@ channels = ["nvidia", "conda-forge"]
 platforms = ["linux-64", "win-64"]
 preview = ["pixi-build"]
 
-[system-requirements]
-cuda = "12"
-
 [workspace.build-variants]
 python = ["3.10.*", "3.11.*", "3.12.*", "3.13.*", "3.14.*"]
+cuda-version = ["12.*"]
 
 [package.build]
 backend = { name = "pixi-build-python", version = "*" }
 build-number = 3
+build-string-prefix = "cu12"
 
 [package.build.source]
 git = "https://github.com/CERN/TIGRE.git"
@@ -24,12 +23,12 @@ compilers = ["cxx"]
 ignore-pypi-mapping = false
 
 [package.build-dependencies]
-cuda-version = "12.*"
+cuda-version = "*"
 cuda-nvcc = "*"
 
 [package.host-dependencies]
 python = "*"
-cuda-version = "12.*"
+cuda-version = "*"
 libcurand-dev = "*"
 
 [package.target.linux-64.host-dependencies]
