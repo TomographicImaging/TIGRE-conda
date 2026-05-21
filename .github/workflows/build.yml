@@ -24,7 +24,7 @@ jobs:
         pixi-version: v0.68.1
         run-install: false
     - name: Build
-      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }} --build-number 1
+      run: pixi publish --target-dir dist/${{ matrix.os == 'ubuntu' && 'linux-64' || 'win-64' }} --build-number 2
     - name: Publish artifact
       uses: actions/upload-artifact@v7
       with:
